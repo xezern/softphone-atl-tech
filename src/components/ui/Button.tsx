@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+
 interface IButtonProps {
     classname?: string;
     icon: React.ReactNode;
-    activeIcon?: React.ReactNode,
+    activeColor?: string,
     id: string;
     name: string;
     onClick?: () => void;
 }
 
-export default function Button({ classname, icon, activeIcon, id, name, onClick }: IButtonProps) {
+export default function Button({ classname, icon, activeColor, id, name, onClick }: IButtonProps) {
     const [active, setActive] = useState(false)
     function handleClickButton() {
         onClick?.();
@@ -19,10 +20,14 @@ export default function Button({ classname, icon, activeIcon, id, name, onClick 
         <button
             onClick={handleClickButton}
             id={id}
+            aria-pressed={active}
             name={name}
-            className={`grid place-items-center p-2 shadow-2xl cursor-pointer border border-[#2f2e2e65] ${classname}`}
+            style={{
+                background: active ? activeColor : ''
+            }}
+            className={`grid place-items-center transition-all duration-500 p-2 shadow-2xl cursor-pointer border border-[#2f2e2e65] ${classname}`}
         >
-            {(active && activeIcon) ? activeIcon : icon}
+            {icon}
         </button>
     );
 }

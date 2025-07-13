@@ -1,34 +1,38 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { formatDuration } from "../../utility/formatDuration"
 
-export default function Timer({ isOpenTimer }: any) {
+interface ITimerProps {
+    isOpenTimer: boolean
+}
+
+export default function Timer({ isOpenTimer }: ITimerProps) {
     const [timer, setTimer] = useState<string>('00:00')
-    const timerRef = useRef<any | null>(null)
+    const [intervalID, setIntervalId] = useState<ReturnType<typeof setInterval> | null>(null)
 
     useEffect(() => {
         if (isOpenTimer) startTimer()
         else stopTimer()
+
+        return () => stopTimer()
     }, [isOpenTimer])
 
     function startTimer() {
         let dur = 0
-        timerRef.current = setInterval(() => {
+        stopTimer() // Prev. intervals clear 
+        const id = setInterval(() => {
             dur++
             setTimer(formatDuration(dur))
         }, 1000)
+
+        setIntervalId(id)
     }
 
-    const stopTimer = () => {
-        if (timerRef.current) {
-            clearInterval(timerRef.current)
-            timerRef.current = null
+    function stopTimer() {
+        if (intervalID) {
+            clearInterval(intervalID)
+            setIntervalId(null)
         }
     }
 
-    return (
-        <p>
-            {timer}
-        </p>
-
-    )
+    return <p>{timer}</p>
 }

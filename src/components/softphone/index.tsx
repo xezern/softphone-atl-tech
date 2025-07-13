@@ -3,7 +3,7 @@ import { convertStatus } from "./consts"
 import Timer from "../ui/Timer"
 import CustomeVisualizer from "./CustomeVisualizer"
 import Button from "../ui/Button"
-import { FaMicrophone, FaMicrophoneAltSlash, FaPhoneAlt } from "react-icons/fa"
+import { FaMicrophoneAltSlash, FaPhoneAlt } from "react-icons/fa"
 
 function Softphone() {
   const [callStatus, setCallStatus] = useState<"idle" | "connecting" | "active" | "ended" | "permission-denied">("idle")
@@ -55,8 +55,10 @@ function Softphone() {
   }
 
   async function stopMeet() {
+    console.log('Zəng sonlandırılır...')
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((audio) => { audio.stop() })
+      console.log("Audio treyk dayandrıldı");
       streamRef.current = null
     }
 
@@ -71,7 +73,7 @@ function Softphone() {
       const audioTracks = streamRef.current.getAudioTracks()
       audioTracks?.forEach((audio) => {
         audio.enabled = !audio.enabled
-        console.log(`İstifadəçi zəngi ${audio.enabled ? 'səsliyə' : 'səssizə'} atdı \n`, audioTracks[0]);
+        console.log(`İstifadəçi zəngi ${audio.enabled ? 'səsli' : 'səssiz'} rejimə atdı \n`, audioTracks[0]);
       })
     }
   }
@@ -93,6 +95,8 @@ function Softphone() {
 
         {callStatus === 'active' && <Timer isOpenTimer={callStatus === 'active'} />}
 
+        {callStatus === 'active' && <b>Zəng başladı</b>}
+
         <CustomeVisualizer
           audio={audio}
           visualizerActionsRef={visualizerActionsRef}
@@ -104,7 +108,7 @@ function Softphone() {
               onClick={startMeet}
               id="start-meet"
               icon={<FaPhoneAlt className="text-white" />}
-              name="start-meet-button"
+              name="startMeetMutton"
               classname="w-full h-[40px] mx-[20px] rounded-full bg-green-600 hover:bg-green-700"
             /> :
             callStatus === "active" ?
@@ -113,19 +117,20 @@ function Softphone() {
                   onClick={handleMuted}
                   id="mute"
                   icon={<FaMicrophoneAltSlash />}
-                  activeIcon={<FaMicrophone />}
-                  name="mute-button"
+                  activeColor='#e71a1abb'
+                  name="muteButton"
                   classname="size-[50px] rounded-full  "
                 />
                 <Button
                   onClick={stopMeet}
-                  id="phonecall"
+                  id="phone-call"
                   icon={<FaPhoneAlt className="text-white rotate-180" />}
-                  name="phone-call"
+                  name="phoneCall"
                   classname="size-[50px] rounded-full bg-red-600"
                 />
               </>
-              : null
+              :
+              <PulseAnimateButton />
           }
         </div>
       </div>
@@ -134,3 +139,10 @@ function Softphone() {
 }
 
 export default Softphone
+
+const PulseAnimateButton = () =>
+  <div className="w-full h-[40px] border-[#2f2e2e65] border mx-[20px] rounded-full flex items-center justify-center space-x-2">
+    <div className="w-4 h-4 rounded-full animate-pulse bg-[#2b97e1]"></div>
+    <div className="w-4 h-4 rounded-full animate-pulse bg-[#2b97e1]"></div>
+    <div className="w-4 h-4 rounded-full animate-pulse bg-[#2b97e1]"></div>
+  </div>
