@@ -1,60 +1,103 @@
-# React + TypeScript + Vite
+# Soft Phone UI with React, TypeScript & Vite 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bu layihə, **React, TypeScript və Vite** istifadə edərək qurulmuş, veb əsaslı, funksional bir **soft phone istifadəçi interfeysidir (UI)**. O, istifadəçilərə zəng etmək, zənglərə cavab vermək və əlaqələrə nəzarət etmək kimi əsas telefon funksionallıqlarını təmin edir.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Əsas Xüsusiyyətlər (Features)
 
-## Expanding the ESLint configuration
+* **Zəngə başlama:** Zəng etmə simuliyasiyasının qurulmasi.
+* **Mikrofonu Səssizləşdirmə (Mute/Unmute):** Zəng zamanı mikrofonu açma/bağlama.
+* **Zəngi Bitirmə:** Aktiv zəngi sonlandırma.
+* **Zəng Vaxtı Göstəricisi:** Aktiv zəngin müddətini göstərən taymer.
+* **Audio Vizualizator:** Səs səviyyəsini göstərən real-time vizualizator.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
+## 🛠️ İstifadə Olunan Texnologiyalar (Technologies Used)
+
+Bu layihə aşağıdakı əsas texnologiyalarla qurulmuşdur:
+
+* **React.js:** İstifadəçi interfeysinin qurulması üçün JavaScript kitabxanası.
+* **TypeScript:** Təhlükəsiz və skalyasiya oluna bilən kod yazmaq üçün JavaScript-in typeləşdirilmiş superseti.
+* **Vite:** Yüksək sürətli inkişaf serveri və build aləti.
+* **WebRTC:** Real-time səs və video rabitə üçün brauzer əsaslı texnologiya (əgər zəng funksionallığı WebRTC ilə təmin edilirsə, əmin olun).
+* **`react-sound-visualizer`:** Audio vizualizasiya üçün kitabxana.
+* **Layout üçün:** `tailwindCSS`.
+
+---
+
+## 🚀 Sürətli Başlanğıc (Quick Start)
+
+Layihəni qurmaq və işə salmaq üçün aşağıdakı addımları izləyin:
+
+1.  **Repo-nu Klonlayın:**
+    ```bash
+    git clone https://github.com/xezern/softphone-atl-tech
+    cd softphone-atl-tech
+    ```
+
+2.  **Asılılıqları Quraşdırın:**
+    Layihənin asılılıqlarını yükləmək üçün `npm`, `yarn` və ya `pnpm` istifadə edin:
+    ```bash
+    npm install
+    # və ya
+    yarn install
+    # və ya
+    pnpm install
+    ```
+
+3.  **İnkişaf Serverini Başladın:**
+    Layihəni inkişaf rejimində işə salın:
+    ```bash
+    npm run dev
+    # və ya
+    yarn dev
+    # və ya
+    pnpm dev
+    ```
+    Bu əmr layihəni `http://localhost:5555` (və ya Vite-in təyin etdiyi başqa bir portda) işə salacaq.
+
+---
+
+## 🔧 Konfiqurasiya və Skriptlər (Configuration & Scripts)
+
+Layihənin əsas konfiqurasiya faylları və mövcud skriptlər aşağıdadır:
+
+### Mövcud Skriptlər (Available Scripts)
+
+`package.json` faylında təyin edilmiş əsas skriptlər:
+
+* `npm run dev` və ya `npm start`: İnkişaf serverini işə salır.
+* `npm run build`: Layihəni istehsal (production) üçün qurur (bundle edir).
+* `npm run lint`: ESLint qaydalarına əsasən kodunuzu yoxlayır.
+* `npm run preview`: Qurulmuş (build) layihəni lokal olaraq preview edir.
+
+### ESLint Konfiqurasiyasını Genişləndirmək
+
+Kod keyfiyyətini daha da artırmaq üçün `eslint.config.js` faylını aşağıdakı kimi təkmilləşdirə bilərsiniz. Bu, type-aware lint qaydalarını və React-ə xas lint qaydalarını aktivləşdirir:
+
+```javascript
+import tseslint from 'typescript-eslint';
+import globalIgnores from 'eslint-config-flat-ignore'; // Əgər istifadə edirsinizsə
+import reactX from 'eslint-plugin-react-x';
+import reactDom from 'eslint-plugin-react-dom';
+
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(['dist']), // 'dist' qovluğunu lint-dən kənarlaşdırır
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
+      // TypeScript üçün tövsiyə olunan type-aware qaydalar
       ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+      // Əlavə olaraq, daha sərt qaydalar üçün:
+      // ...tseslint.configs.strictTypeChecked,
+      // Və ya stilistik qaydalar üçün:
+      // ...tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
+      // React-ə xas lint qaydalarını aktivləşdirin
       reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
+      // React DOM-a xas lint qaydalarını aktivləşdirin
       reactDom.configs.recommended,
     ],
     languageOptions: {
@@ -62,8 +105,7 @@ export default tseslint.config([
         project: ['./tsconfig.node.json', './tsconfig.app.json'],
         tsconfigRootDir: import.meta.dirname,
       },
-      // other options...
+      // digər seçimlər...
     },
   },
-])
-```
+]);
